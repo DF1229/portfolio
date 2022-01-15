@@ -34,19 +34,20 @@ app.get("/register", (req, res) => {
 // ========<POST ROUTES>=========
 
 app.post("/login", async (req, res) => {
+    console.log(req.body);
     try {
         // Store & validate user input
-        const {email, password} = req.body;
-        if (!(email && password)) {
+        const {username, password} = req.body;
+        if (!(username && password)) {
             res.status(400).send("Missing email or password");
         }
 
         // Find user and verify password.
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username });
         if (user && (await bcrypt.compare(password, user.password))) {
             // Generate and store token in database
             const token = jwt.sign (
-                { user_id: user._id, email },
+                { user_id: user._id, username },
                 process.env.TOKEN_KEY,
                 { expiresIn: "2h" }
             );
@@ -54,7 +55,7 @@ app.post("/login", async (req, res) => {
             user.token = token;
             res.status(200).json(user);
         } else if (!user) {
-            res.status(400).send("Could not find user");
+            res.status(400).send("No user by that name");
         } else {
             res.status(400).send("Invalid password");
         }
@@ -65,6 +66,8 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/register", (req, res) => {
+    console.log(req);
+
     res.status(200).send();
 });
 
