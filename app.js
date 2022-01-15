@@ -34,7 +34,6 @@ app.get("/register", (req, res) => {
 // ========<POST ROUTES>=========
 
 app.post("/login", async (req, res) => {
-    console.log(req.body);
     try {
         // Store & validate user input
         const {username, password} = req.body;
