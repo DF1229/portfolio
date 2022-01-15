@@ -44,6 +44,7 @@ app.post("/login", async (req, res) => {
         // Find user and verify password.
         const user = await User.findOne({ email });
         if (user && (await bcrypt.compare(password, user.password))) {
+            // Generate and store token in database
             const token = jwt.sign (
                 { user_id: user._id, email },
                 process.env.TOKEN_KEY,
@@ -52,11 +53,19 @@ app.post("/login", async (req, res) => {
 
             user.token = token;
             res.status(200).json(user);
+        } else if (!user) {
+            res.status(400).send("Could not find user");
+        } else {
+            res.status(400).send("Invalid password");
         }
 
     } catch (error) {
         console.error(error);
     }
+});
+
+app.post("/register", (req, res) => {
+    res.status(200).send();
 });
 
 // ========</POST ROUTES>========
