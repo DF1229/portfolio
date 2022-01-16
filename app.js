@@ -17,7 +17,6 @@ app.route('/:path').all((req, res) => {
 
 function logger(req, res, next) {
     console.log(`${req.method} ${req.originalUrl}`);
-    console.log(req.cookies);
     next();
 }
 
