@@ -12,32 +12,43 @@ const cookieParser = require('cookie-parser');
 router.use(express.urlencoded({ extended: true }));
 router.use(cookieParser());
 
+const cookieOptions = {
+    strict: {
+        httpOnly: true,
+        sameSite: "Strict"
+    },
+    lax: {
+        httpOnly: false,
+        sameSite: "Lax"
+    }
+}
+
 router.route('/')
     .get((req, res) => {
-        if (!req.cookies.user) {
-            res.status(400).render('login');
-        } else {
-            res.status(200).render('index');
+        if (!auth.verifyToken(res, req)) {
+            return res.status(401).render('login');
         }
+
+        res.status(200).render('index', {debugMsg: "Logged in 🍪"});
     });
 
 router.route('/login')
     .get((req, res) => {
-        res.sendStatus(200);
+        res.status(200).redirect('/');
     })
     .post(async (req, res) => {
         try {
             const { username, password } = req.body;
             if (!(username && password)) {
-                res.status(400).render('login', { "errMsg": "Missing username or password" });
+                return res.status(400).render('login', { "errMsg": "Missing username or password" });
             }
 
             const user = await User.findOne({ username });
             if (user && (await bcrypt.compare(password, user.password))) {
                 const token = auth.generateToken(user, username);
-
-                user.token = token;
-                res.cookie.user = user;
+                
+                res.cookie('user', user, cookieOptions.strict);
+                res.cookie(process.env.TOKEN_HEADER, token, cookieOptions.strict);
                 res.status(200).render('index');
             }
 
@@ -77,9 +88,9 @@ router.route('/register')
         });
         
         const token = auth.generateToken(user, username);
-        user.token = token;
+        res.cookie(process.env.TOKEN_HEADER, token, cookieOptions.strict);
 
-        res.sendStatus(200);
+        res.status(200).redirect('/');
     });
 
 module.exports = router;
