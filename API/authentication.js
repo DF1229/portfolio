@@ -2,7 +2,6 @@
 // This file gets called by app.js
 
 const jwt = require("jsonwebtoken");
-const { TOKEN_KEY } = process.env;
 
 module.exports = {
     generateToken(user, username) {
@@ -14,15 +13,15 @@ module.exports = {
 
         return token;
     },
-    verifyToken(res, req) {
-        const token = req.cookies[process.env.TOKEN_HEADER];
+    verifyToken(req, res) {
+        const token = req.cookies[process.env.JWT_COOKIE];
 
         if (!token) {
-            return false;
+            return res.status(400).render('index', {debugMsg: "no token present"});
         }
 
         try {
-            const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+            const decoded = jwt.verify(token, process.env.JWT_KEY);
             req.user = decoded;
             return true;
         } catch (error) {

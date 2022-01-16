@@ -31,7 +31,10 @@
         </table>
         
         <% if (locals.errMsg) { %>
-            <p style="color: red"><%= errMsg %></p>
+            <p style="color: red"><%= locals.errMsg %></p>
+        <% } %>
+        <% if (locals.statusMsg) { %>
+            <p style="color: red"><%= locals.statusMsg %></p>
         <% } %>
     </form>
 </body>

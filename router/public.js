@@ -1,16 +1,15 @@
 // This file defines how requests to the / route should get handled
+// This file gets called by app.js
+
 require('../API/database').connect();
 const User = require('../API/model/user');
 
-const jwt = require('jsonwebtoken');
 const express = require("express");
 const bcrypt = require('bcryptjs');
 const auth = require('../API/authentication');
 
 const router = express.Router();
-const cookieParser = require('cookie-parser');
 router.use(express.urlencoded({ extended: true }));
-router.use(cookieParser());
 
 const cookieOptions = {
     strict: {
@@ -25,11 +24,15 @@ const cookieOptions = {
 
 router.route('/')
     .get((req, res) => {
-        if (!auth.verifyToken(res, req)) {
-            return res.status(401).render('login');
+        if (req.cookies[process.env.JWT_COOKIE] == undefined) {
+            return res.status(200).render('login');
+        } 
+        
+        if (!auth.verifyToken(req, res)) {
+            return res.status(401).render('login', {errMsg: "Access token expired"});
         }
 
-        res.status(200).render('index', {debugMsg: "Logged in 🍪"});
+        res.status(200).render('index', {debugMsg: "Logged in 🍪", user: req.cookies['user']});
     });
 
 router.route('/login')
@@ -48,8 +51,8 @@ router.route('/login')
                 const token = auth.generateToken(user, username);
                 
                 res.cookie('user', user, cookieOptions.strict);
-                res.cookie(process.env.TOKEN_HEADER, token, cookieOptions.strict);
-                res.status(200).render('index');
+                res.cookie(process.env.JWT_COOKIE, token, cookieOptions.strict);
+                res.status(200).redirect('.');
             }
 
         } catch (error) {
@@ -86,11 +89,8 @@ router.route('/register')
             password: encryptedPassword,
             admin
         });
-        
-        const token = auth.generateToken(user, username);
-        res.cookie(process.env.TOKEN_HEADER, token, cookieOptions.strict);
 
-        res.status(200).redirect('/');
+        res.status(200).render('register', {statusMsg: "User registered"});
     });
 
 module.exports = router;

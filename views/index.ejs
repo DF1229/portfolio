@@ -8,7 +8,10 @@
 </head>
 <body>
     <% if (locals.debugMsg) { %>
-    <h1><%= locals.debugMsg %></h1>
+    <p><%= locals.debugMsg %></p>
     <% } %>
+
+    Logged in as <%= locals.user.username %>.
+    <%= locals.user.email %>
 </body>
 </html>
