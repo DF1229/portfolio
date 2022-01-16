@@ -18,7 +18,7 @@ const Project = require("./API/model/project");
 
 // Define app
 const app = express();
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ========<GET ROUTES>==========
 
