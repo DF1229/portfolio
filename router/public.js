@@ -32,7 +32,7 @@ router.route('/')
             return res.status(401).render('login', {errMsg: "Access token expired"});
         }
 
-        res.status(200).render('index', {debugMsg: "Logged in 🍪", user: req.cookies['user']});
+        res.status(200).render('index', {user: req.cookies['user']});
     });
 
 router.route('/login')
