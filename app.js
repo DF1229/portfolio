@@ -1,8 +1,6 @@
 // This file defines what routes the API listens to, and how requests get handled.
 // This file gets called by index.js.
 
-// Load environment variables
-require("dotenv").config();
 // Connect to database
 require("./API/database").connect();
 
