@@ -10,7 +10,6 @@ require("./API/database").connect();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const express = require("express");
-const auth = require("./API/authentication");
 
 // Import MongoDB schema's
 const User = require("./API/model/user");
