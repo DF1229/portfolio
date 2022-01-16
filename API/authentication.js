@@ -4,20 +4,17 @@
 const jwt = require("jsonwebtoken");
 const { TOKEN_KEY } = process.env;
 
-const verifyToken = (req, res, next) => {
-    const token = req.body.token || req.query.token || req.header["x-access-token"];
+module.exports = {
+    generateToken(user, username) {
+        const token = jwt.sign(
+            { user_id: user._id, username },
+            process.env.TOKEN_KEY,
+            { expiresIn: "2h" }
+        );
 
-    if (!token) {
-        return res.status(403).send("A token is required for authentication");
-    }
+        return token;
+    },
+    verifyToken(res, req) {
 
-    try {
-        const decoded = jwt.verify(token, TOKEN_KEY);
-        req.user = decoded;
-    } catch (error) {
-        return res.status(401).send("Invalid token");
     }
-    return next();
 }
-
-module.exports = verifyToken;

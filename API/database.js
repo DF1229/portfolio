@@ -1,5 +1,5 @@
 // This file facilitates a connection to a MongoDB database, based on a URI in the envirement variables
-// This file gets called by app.js.
+// This file gets called by public.js.
 
 const mongoose = require("mongoose");
 const { MONGO_URI } = process.env;

@@ -7,23 +7,26 @@
     <title>Document</title>
 </head>
 <body>
-    <% if (errMsg) { %>
-        <p><%= errMsg %></p>
-    <% } %>
+    <p>Please login to access the rest of the site</p>
+
     <form action="/login" method="post">
         <table>
             <tr>
                 <td><label for="username">Username:</label></td>
-                <td><input type="text" name="username" required></td>
+                <td><input type="text" name="username" placeholder="<% locals.username %>" required></td>
             </tr>
             <tr>
                 <td><label for="password">Password:</label></td>
-                <td><input type="password" name="password" required></td>
+                <td><input type="password" name="password" placeholder="<% locals.password %>" required></td>
             </tr>
             <tr>
                 <td><input type="submit" value="Login"></td>
             </tr>
         </table>
     </form>
+    
+    <% if (locals.errMsg) { %>
+        <p style="color: red"><%= errMsg %></p>
+    <% } %>
 </body>
 </html>

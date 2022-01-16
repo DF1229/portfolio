@@ -29,6 +29,10 @@
                 <td><input type="submit" value="Register"></td>
             </tr>
         </table>
+        
+        <% if (locals.errMsg) { %>
+            <p style="color: red"><%= errMsg %></p>
+        <% } %>
     </form>
 </body>
 </html>
