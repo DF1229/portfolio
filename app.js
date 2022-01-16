@@ -18,6 +18,7 @@ const Project = require("./API/model/project");
 // Define app
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 // ========<GET ROUTES>==========
 
