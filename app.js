@@ -10,8 +10,12 @@ app.set('view engine', 'ejs');
 
 app.use('/', logger, publicRouter);
 
+app.route('/:path').all((req, res) => {
+    res.sendStatus(404);
+});
+
 function logger(req, res, next) {
-    console.log(req.originalUrl);
+    console.log(`${req.method} ${req.originalUrl}`);
     next();
 }
 
