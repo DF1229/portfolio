@@ -24,12 +24,12 @@ const cookieOptions = {
 
 router.route('/')
     .get((req, res) => {
-        if (req.cookies[process.env.JWT_COOKIE] == undefined) {
+        if (!req.cookies[process.env.JWT_COOKIE]) {
             return res.status(200).render('login');
         } 
         
         if (!auth.verifyToken(req, res)) {
-            return res.status(401).render('login', {errMsg: "Access token expired"});
+            return res.status(401).render('login', {errMsg: "Access token expired, or otherwise invalidated"});
         }
 
         res.status(200).render('index', {user: req.cookies['user']});

@@ -7,11 +7,18 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>Daan's portfolio</h1>
+
     <% if (locals.debugMsg) { %>
     <p><%= locals.debugMsg %></p>
     <% } %>
 
-    Logged in as <%= locals.user.username %>.
+    Logged in as <%= locals.user.username %>.<br>
     <%= locals.user.email %>
+    <br>
+    <% if (locals.user.admin) { %>
+        Logged in as admin.
+        Click <a href="/register">here</a> to register a new user.
+    <% } %>
 </body>
 </html>
