@@ -10,7 +10,7 @@
     <h1>Daan's portfolio</h1>
 
     <% if (locals.debugMsg) { %>
-    <p><%= locals.debugMsg %></p>
+    <p style="color: red"><%= locals.debugMsg %></p>
     <% } %>
 
     Logged in as <%= locals.user.username %>. <% if (locals.user.admin) { %> [ADMIN] <% } %><br>
