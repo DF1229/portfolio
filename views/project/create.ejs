@@ -28,6 +28,9 @@
         </table>
     </form>
 
+    <% if (locals.errMsg) { %>
+        <p style="color: blue"><%= locals.errMsg %></p>
+    <% } %>
     <% if (locals.statusMsg) { %>
         <p style="color: blue"><%= locals.statusMsg %></p>
     <% } %>
