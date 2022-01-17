@@ -25,11 +25,11 @@ const cookieOptions = {
 router.route('/')
     .get((req, res) => {
         if (!req.cookies[process.env.JWT_COOKIE]) {
-            return res.status(200).render('login');
+            return res.status(200).render('user/login');
         } 
         
         if (!auth.verifyToken(req, res)) {
-            return res.status(401).render('login', {errMsg: "Access token expired, or otherwise invalidated"});
+            return res.status(401).render('user/login', {errMsg: "Access token expired, or otherwise invalidated"});
         }
 
         res.status(200).render('index', {user: req.cookies['user']});
@@ -43,7 +43,7 @@ router.route('/login')
         try {
             const { username, password } = req.body;
             if (!(username && password)) {
-                return res.status(400).render('login', { "errMsg": "Missing username or password" });
+                return res.status(400).render('user/login', { errMsg: "Missing username or password" });
             }
 
             const user = await User.findOne({ username });
@@ -53,6 +53,10 @@ router.route('/login')
                 res.cookie('user', user, cookieOptions.strict);
                 res.cookie(process.env.JWT_COOKIE, token, cookieOptions.strict);
                 res.status(200).redirect('.');
+            } else if (!user) {
+                return res.status(401).render('user/login', { errMsg: "User not found" });
+            } else {
+                return res.status(401).render('user/login', { errMsg: "Invalid password" });
             }
 
         } catch (error) {
@@ -63,19 +67,29 @@ router.route('/login')
 
 router.route('/register')
     .get((req, res) => {
-        res.status(200).render('register');
+        // return res.render('user/register');
+
+        if (!req.cookies['user']) {
+            return res.status(403).redirect('/login');
+        }
+
+        if (!req.cookies['user'].admin) {
+            return res.status(403).redirect('/');
+        }
+
+        res.status(200).render('user/register');
     })
     .post(async (req, res) => {
         // Validate required data is present
         const { username, email, password } = req.body;
         if (!(username && email && password)) {
-            return res.status(400).render('register', {errMsg: "Missing username, email, or password."});
+            return res.status(400).render('user/register', {errMsg: "Missing username, email, or password."});
         }
 
         // Attempt to find user with given emailadress
         const oldUser = await User.findOne({ email });
         if (oldUser) {
-            return res.status(409).render('register', {errMsg: "User already exists."});
+            return res.status(409).render('user/register', {errMsg: "User already exists."});
         }
 
         // Handle user creation
@@ -90,7 +104,7 @@ router.route('/register')
             admin
         });
 
-        res.status(200).render('register', {statusMsg: "User registered"});
+        res.status(200).render('user/register', {statusMsg: "User registered"});
     });
 
 module.exports = router;
