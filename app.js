@@ -11,10 +11,6 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use('/', logger, publicRouter);
 
-app.route('/:path').all((req, res) => {
-    res.sendStatus(404);
-});
-
 function logger(req, res, next) {
     console.log(`${req.ip} ${req.method} ${req.originalUrl}`);
     next();
