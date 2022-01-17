@@ -13,13 +13,18 @@
     <p><%= locals.debugMsg %></p>
     <% } %>
 
-    Logged in as <%= locals.user.username %>.<br>
-    <%= locals.user.email %>
+    Logged in as <%= locals.user.username %>. <% if (locals.user.admin) { %> [ADMIN] <% } %><br>
+    <i><%= locals.user.email %></i>
     <br>
     <% if (locals.user.admin) { %>
-        Logged in as admin.<br>
-        Click <a href="/register">here</a> to register a new user.<br>
-        Click <a href="/project/new">here</a> to add a new project.<br>
+        <br>
+        Click <a href="/user/register">here</a> to register a new user.<br>
+        Click <a href="/user/update">here</a> to update an existing user.<br>
+        Click <a href="/user/delete">here</a> to delete an existing user.<br>
+        <br>
+        Click <a href="/project/create">here</a> to add a new project.<br>
+        Click <a href="/project/update">here</a> to update an existing project.<br>
+        Click <a href="/project/delete">here</a> to delete an existing project.<br>
     <% } %>
 </body>
 </html>

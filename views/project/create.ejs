@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create new project</title>
+</head>
+<body>
+    <h1>Create new project</h1>
+    <a href="/">Back</a><br><br><br><br>
+
+    <form action="/project/create" method="post">
+        <table>
+            <tr>
+                <td><input type="text" name="title" id="title" placeholder="Insert title here..." required></td>
+            </tr>
+            <tr>
+                <td><textarea name="body" id="body" rows="4" cols="50"></textarea></td>
+            </tr>
+            <tr>
+                <td><label for="hidden">Hidden:</label></td>
+                <td><input type="checkbox" name="hidden" id="hidden"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Create"></td>
+            </tr>
+        </table>
+    </form>
+
+    <% if (locals.statusMsg) { %>
+        <p style="color: green"><%= locals.statusMsg %></p>
+    <% } %>
+</body>
+</html>

@@ -3,6 +3,7 @@
 
 require('../API/database').connect();
 const User = require('../API/model/user');
+const Project = require('../API/model/project');
 
 const express = require("express");
 const bcrypt = require('bcryptjs');
@@ -94,10 +95,10 @@ router.route('/register')
 
         // Handle user creation
         let { admin } = req.body; 
-        admin = (admin ? true : false); // if enabled, raw value = "on"
+        admin = (admin ? true : false); // if enabled, raw value == "on"
 
         let encryptedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({
+        await User.create({
             username,
             email,
             password: encryptedPassword,
@@ -106,5 +107,40 @@ router.route('/register')
 
         res.status(200).render('user/register', {statusMsg: "User registered"});
     });
+
+router.route('/project/:action')
+    .get((req, res) => {
+        if (!req.cookies['user']) {
+            return res.status(403).redirect('/login');
+        }
+
+        if (!req.cookies['user'].admin) {
+            return res.status(403).redirect('/');
+        }
+
+        res.status(200).render(`project/${req.params.action}`);
+    })
+    .post(async (req, res) => {
+        const data = parseProjectData(req.body, req.cookies['user']);
+        const project = await Project.create(data);
+        if (project) {
+            res.status(200).render('project/create', { statusMsg: "Project added to database"});
+        } 
+
+
+        console.log(req.body);
+    });
+
+function parseProjectData(body, user) {
+    let { hidden } = body;
+    hidden = (hidden ? true : false); // if enabled, raw value == "on"
+
+    return {
+        title: body.title,
+        author: user.username,
+        body: body.body,
+        hidden
+    }
+}
 
 module.exports = router;
