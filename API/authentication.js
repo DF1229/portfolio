@@ -16,10 +16,6 @@ module.exports = {
     verifyToken(req, res) {
         const token = req.cookies[process.env.JWT_COOKIE];
 
-        if (!token) {
-            return res.status(400).render('index', {debugMsg: "no token present"});
-        }
-
         try {
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             req.user = decoded;
