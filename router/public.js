@@ -22,10 +22,22 @@ router.get('/', (req, res) => {
 router.get('/:page', (req, res) => {
     if (req.params.page == 'verify') {
         res.sendStatus(501);
-    } else if (req.params.page == 'projects') {
-        res.sendStatus(501);
     } else if (req.params.page == 'login') {
         res.status(200).render('user/login');
+    } else if (req.params.page == 'admin') {
+        if (!req. cookies[process.env.JWT_COOKIE]) {
+            return res.status(200).render('user/login');
+        }
+
+        if (!auth.verifyToken(req, res)) {
+            return res.status(401).render('user/login', { errMsg: "Access token expired, or otherwise invalidated" });
+        }
+
+        if (!req.cookies['user'].admin) {
+            return res.sendStatus(403);
+        }
+
+        res.status(200).render('admin', { user: req.cookies['user'] });
     } else if (req.params.page == 'register') {
         // return res.render('user/register');
 
