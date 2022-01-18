@@ -19,9 +19,6 @@ const apiRouter = require('./router/api');
 app.use('/api', logger, apiRouter);
 app.use('/', logger, publicRouter);
 
-// 404 page
-app.route('/').all((req, res) => { res.sendStatus(404); });
-
 function logger(req, res, next) {
     console.log(`${req.ip} ${req.method} ${req.originalUrl}`);
     next();
