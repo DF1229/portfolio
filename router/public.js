@@ -7,6 +7,8 @@ const auth = require('../API/authentication');
 const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
 
+router.route('/').post((req, res) => { res.sendStatus(418); });
+
 router.get('/', (req, res) => {
     if (!req.cookies[process.env.JWT_COOKIE]) {
         return res.status(200).render('user/login');
@@ -25,7 +27,7 @@ router.get('/:page', (req, res) => {
     } else if (req.params.page == 'login') {
         res.status(200).render('user/login');
     } else if (req.params.page == 'admin') {
-        if (!req. cookies[process.env.JWT_COOKIE]) {
+        if (!req.cookies[process.env.JWT_COOKIE]) {
             return res.status(200).render('user/login');
         }
 
