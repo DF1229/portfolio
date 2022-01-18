@@ -38,6 +38,8 @@ router.get('/:page', (req, res) => {
         }
 
         res.status(200).render('user/register');
+    } else {
+        res.sendStatus(404);
     }
 });
 
