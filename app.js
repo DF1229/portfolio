@@ -20,7 +20,7 @@ app.use('/api', logger, apiRouter);
 app.use('/', logger, publicRouter);
 
 function logger(req, res, next) {
-    console.log(`${req.ip} ${req.method} ${req.originalUrl}`);
+    console.log(`${new Date().toLocaleTimeString()} ${req.ip} ${req.method} ${req.originalUrl}`);
     next();
 }
 
