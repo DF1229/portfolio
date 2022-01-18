@@ -1,6 +1,6 @@
 // This file defines what routes the API listens to, and how requests get handled.
 // This file gets called by index.js.
-require('../API/database').connect();
+require('./API/database').connect();
 
 const cookieParser = require('cookie-parser');
 const express = require("express");

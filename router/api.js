@@ -1,6 +1,8 @@
 // This file servers as a router for all API calls, most - if not all - database interactions are in this file.
 // This file gets called by app.js
 const express = require('express');
+const bcrypt = require('bcryptjs');
+const auth = require('../API/authentication');
 
 // Router definition
 const router = express.Router();
@@ -21,7 +23,7 @@ const cookieOptions = {
     }
 }
 
-router.route('/api/user/:path')
+router.route('/user/:path')
     .get((req, res) => { res.status(301).redirect('/') })
     .post(async (req, res) => {
         if (req.params.path == 'login') {
@@ -81,7 +83,7 @@ router.route('/api/user/:path')
         }
     });
 
-router.route('/api/project/:action')
+router.route('/project/:action')
     .get((req, res) => { res.status(301).redirect('/') })
     .post(async (req, res) => {
         if (req.params.action == 'create') {
@@ -113,3 +115,5 @@ function parseProjectData(body, user) {
         hidden
     }
 }
+
+module.exports = router;

@@ -2,7 +2,6 @@
 // This file gets called by app.js
 
 const express = require("express");
-const bcrypt = require('bcryptjs');
 const auth = require('../API/authentication');
 
 const router = express.Router();
