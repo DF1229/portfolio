@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
     title: {type: String},
+    author: {type: String},
     preview: {type: String},
     body: {type: String},
     imgLink: {type: String},
