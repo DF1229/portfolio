@@ -41,9 +41,9 @@ router.route('/user/:path')
                     res.cookie(process.env.JWT_COOKIE, token, cookieOptions.strict);
                     res.status(200).redirect('/');
                 } else if (!user) {
-                    return res.status(401).render('user/login', { errMsg: "User not found" });
+                    return res.status(401).render('user/login', { errMsg: "User not found", username: username });
                 } else {
-                    return res.status(401).render('user/login', { errMsg: "Invalid password" });
+                    return res.status(401).render('user/login', { errMsg: "Invalid password", username: username });
                 }
 
             } catch (error) {
