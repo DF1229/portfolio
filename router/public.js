@@ -7,9 +7,11 @@ const auth = require('../API/authentication');
 const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
 
+const Project = require('../API/model/project');
+
 router.route('/').post((req, res) => { res.sendStatus(418); });
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     if (!req.cookies[process.env.JWT_COOKIE]) {
         return res.status(200).render('user/login');
     }
@@ -18,8 +20,15 @@ router.get('/', (req, res) => {
         return res.status(401).render('user/login', { errMsg: "Access token expired, or otherwise invalidated" });
     }
 
-    res.status(200).render('index', { user: req.cookies['user'] });
+    const projects = await Project.find({ hidden: false });
+    res.status(200).render('index', { user: req.cookies['user'], projects: projects });
 });
+
+// <TODO>
+router.get('/project/:id/:action', (req, res) => {
+    res.sendStatus(501);
+});
+// </TODO>
 
 router.get('/:page', (req, res) => {
     if (req.params.page == 'verify') {
@@ -55,6 +64,7 @@ router.get('/:page', (req, res) => {
     } else {
         res.sendStatus(404);
     }
+    // TODO contact route and page
 });
 
 module.exports = router;

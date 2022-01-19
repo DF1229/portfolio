@@ -5,8 +5,12 @@ const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
     title: {type: String},
-    author: {type: String}, // correlate's to submitter's user.ObjectId
+    preview: {type: String},
     body: {type: String},
+    imgLink: {type: String},
+    imgAlt: {type: String},
+    github: {type: String},
+    timeToRead: {type: Number, default: 5},
     date: {type: Date, default: Date.now},
     hidden: {type: Boolean, default: false},
     views: {type: Number, default: 0}
