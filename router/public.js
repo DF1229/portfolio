@@ -8,63 +8,57 @@ const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
 
 const Project = require('../API/model/project');
+const User = require('../API/model/user');
 
-// <TODO>
-router.get('/project/:action/:id', (req, res) => {
+router.get('/login', (req, res) => {
+    res.status(200).render('login');
+});
+
+router.get('/admin', async (req, res) => {
+    if (!req.cookies[process.env.JWT_COOKIE]) {
+        return res.status(401).render('login', { errMsg: "Error: unauthorized" });
+    }
+
+    verifyToken(req, res);
+
+    if (!req.cookies['user'].admin) {
+        return res.status(401).render('login', { errMsg: "Error: unauthorized" });
+    }
+
+    const projects = await Project.find();
+    const users = await User.find();
+    res.status(200).render('admin', { user: req.cookies['user'], users: users, projects: projects});
+});
+
+router.get('/register', (req, res) => {
+    // return res.render('user/register'); // used when testing the register form
+
+    if (!req.cookies['user']) {
+        return res.status(403).redirect('/login');
+    }
+
+    if (!req.cookies['user'].admin) {
+        return res.status(403).redirect('/');
+    }
+
+    res.status(200).render('user/register');    
+});
+
+router.get('/contact', (req, res) => {
     res.sendStatus(501);
 });
-// </TODO>
 
-router.get('/:page', (req, res) => {
-    if (req.params.page == 'verify') {
-        res.sendStatus(501);
-    } else if (req.params.page == 'login') {
-        res.status(200).render('user/login');
-    } else if (req.params.page == 'admin') {
-        if (!req.cookies[process.env.JWT_COOKIE]) {
-            return res.status(200).render('user/login');
-        }
-
-        if (!auth.verifyToken(req, res)) {
-            return res.status(401).render('user/login', { errMsg: "Access token expired, or otherwise invalidated" });
-        }
-
-        if (!req.cookies['user'].admin) {
-            return res.sendStatus(403);
-        }
-
-        res.status(200).render('admin', { user: req.cookies['user'] });
-    } else if (req.params.page == 'register') {
-        // return res.render('user/register');
-
-        if (!req.cookies['user']) {
-            return res.status(403).redirect('/login');
-        }
-
-        if (!req.cookies['user'].admin) {
-            return res.status(403).redirect('/');
-        }
-
-        res.status(200).render('user/register');
-    } else if (req.params.page == 'contact') {
-        res.sendStatus(501);
-    } else {
-        res.sendStatus(404);
-    }
-});
-
-router.post('/', (req, res) => { res.sendStatus(418); });
-router.get('/', async (req, res) => {
-    if (!req.cookies[process.env.JWT_COOKIE]) {
-        return res.status(200).render('user/login');
-    }
-
-    if (!auth.verifyToken(req, res)) {
-        return res.status(401).render('user/login', { errMsg: "Access token expired, or otherwise invalidated" });
-    }
-
+router.route('/')
+    .post((req, res) => { res.sendStatus(418); })
+    .get(async (req, res) => {
     const projects = await Project.find({ hidden: false });
     res.status(200).render('index', { user: req.cookies['user'], projects: projects });
 });
+
+function verifyToken(req, res) {
+    if (!auth.verifyToken(req, res)) {
+        return res.status(401).render('login', { errMsg: "Access token expired, or otherwise invalidated" });
+    }
+}
 
 module.exports = router;

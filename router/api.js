@@ -1,4 +1,4 @@
-// This file servers as a router for all API calls, most - if not all - database interactions are in this file.
+// This file servers as a router for all API calls, most database interactions are in this file.
 // This file gets called by app.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
@@ -24,13 +24,13 @@ const cookieOptions = {
 }
 
 router.route('/user/:path')
-    .get((req, res) => { res.status(301).redirect('/') })
+    .get((req, res) => { res.status(405).redirect('/') })
     .post(async (req, res) => {
         if (req.params.path == 'login') {
             try {
                 const { username, password } = req.body;
                 if (!(username && password)) {
-                    return res.status(400).render('user/login', { errMsg: "Missing username or password" });
+                    return res.status(400).render('login', { errMsg: "Missing username or password" });
                 }
 
                 const user = await User.findOne({ username });
@@ -41,9 +41,9 @@ router.route('/user/:path')
                     res.cookie(process.env.JWT_COOKIE, token, cookieOptions.strict);
                     res.status(200).redirect('/');
                 } else if (!user) {
-                    return res.status(401).render('user/login', { errMsg: "User not found", username: username });
+                    return res.status(401).render('login', { errMsg: "User not found", username: username });
                 } else {
-                    return res.status(401).render('user/login', { errMsg: "Invalid password", username: username });
+                    return res.status(401).render('login', { errMsg: "Invalid password", username: username });
                 }
 
             } catch (error) {
@@ -84,7 +84,7 @@ router.route('/user/:path')
     });
 
 router.route('/project/:action')
-    .get((req, res) => { res.status(301).redirect('/') })
+    .get((req, res) => { res.status(405).redirect('/') })
     .post(async (req, res) => {
         if (req.params.action == 'create') {
             const data = parseProjectData(req.body, req.cookies['user']);

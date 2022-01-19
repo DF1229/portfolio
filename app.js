@@ -13,8 +13,8 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 
 // Define routers
-const publicRouter = require('./router/public');
 const apiRouter = require('./router/api');
+const publicRouter = require('./router/public');
 
 // Set order of routers
 app.use('/api', logger, apiRouter);

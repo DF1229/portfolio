@@ -21,9 +21,10 @@
                 <div class="row">
                     <div class="col-sm-8 col-md-7 py-4">
                         <h4 class="text-white">About</h4>
-                        <p class="text-muted">Projects listen on the page below are ones started, finished, or collaborated
-                            on by Daan Faber. As a software development student with too much free time, he spent a lot of time
-                            looking around for projects to do. These are the projects I worked on during that time.
+                        <p class="text-muted">Projects listed on the page below are ones I started, finished, or collaborated
+                            on. As a software development student with too much free time, I spent a lot of time
+                            looking around for projects to do. Most of these projects are from my time in school, but 
+                            will also be some I worked on just to pass the time. Have a suggestion? Feel free to contact me!
                         </p>
                     </div>
                     <div class="col-sm-4 offset-md-1 py-4">
@@ -78,11 +79,11 @@
                                         <div class="btn-group">
                                             <a href="project/view/<%= project._id %>" class="btn btn-sm btn-outline-primary">View</a>
                                             <a href="<%= project.github %>" class="btn btn-sm btn-outline-secondary">GitHub</a>
-                                            <% if (locals.user.admin) { %>
+                                            <% if (locals.user && locals.user.admin) { %>
                                             <a href="project/edit/<%= project._id %>" class="btn btn-sm btn-outline-warning">Edit</a>
                                             <% } %>
                                         </div>
-                                        <% if (locals.user.admin) { %>
+                                        <% if (locals.user && locals.user.admin) { %>
                                         <small class="text-muted"><%= project.views %> views</small>
                                         <% } else { %>
                                         <small class="text-muted"><%= project.timeToRead %> mins</small>
@@ -103,9 +104,9 @@
         <div class="container">
             <p class="float-end mb-1">
                 <a href="login">Login</a>
-            <% if (locals.user.admin) { %>
+            <% if (locals.user && locals.user.admin) { %>
                 <br>
-                <a href="admin">Admin page</a>
+                <a href="admin">Admin</a>
             <% } %>
             </p>
             <!-- <p class="float-end mb-1">
