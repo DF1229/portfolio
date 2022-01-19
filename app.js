@@ -7,6 +7,7 @@ const express = require("express");
 
 // Define app
 const app = express();
+app.use(express.static('public'));
 app.set('views', __dirname + '\\views');
 app.set('view engine', 'ejs');
 app.use(cookieParser());
@@ -17,7 +18,7 @@ const apiRouter = require('./router/api');
 
 // Set order of routers
 app.use('/api', logger, apiRouter);
-app.use('/', logger, publicRouter);
+app.use('/', publicRouter);
 
 function logger(req, res, next) {
     console.log(`${new Date().toLocaleTimeString()} ${req.ip} ${req.method} ${req.originalUrl}`);
