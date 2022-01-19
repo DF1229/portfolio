@@ -18,7 +18,7 @@ const apiRouter = require('./router/api');
 
 // Set order of routers
 app.use('/api', logger, apiRouter);
-app.use('/', publicRouter);
+app.use('/', logger, publicRouter);
 
 function logger(req, res, next) {
     console.log(`${new Date().toLocaleTimeString()} ${req.ip} ${req.method} ${req.originalUrl}`);
