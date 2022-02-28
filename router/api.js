@@ -50,18 +50,17 @@ router.route('/user/:path')
                 console.error(error);
                 res.sendStatus(500);
             }
-        } else if (req.params.path == 'create') {
+        } else if (req.params.path == 'register') {
             // Validate required data is present
             const { username, email, password } = req.body;
             if (!(username && email && password)) {
-                return res.status(400).render('user/register', { errMsg: "Missing username, email, or password." });
+                return res.status(400).render('admin', { errMsg: "Missing username, email, or password." });
             }
 
-            // Attempt to find user with given emailadress
-            const oldUser = await User.findOne({ email });
-            if (oldUser) {
-                return res.status(409).render('user/register', { errMsg: "User already exists." });
-            }
+            // Attempt to find user with given emailadress or username
+            let oldUser = await User.findOne({ email });
+            oldUser = (oldUser == null ? await User.findOne({username}) : null);
+            if (oldUser) return res.status(409).render('user/register', { errMsg: "User already exists." });
 
             // Handle user creation
             let { admin } = req.body;
@@ -83,24 +82,13 @@ router.route('/user/:path')
         }
     });
 
-router.route('/project/:action')
-    .get((req, res) => { res.status(405).redirect('/') })
+router.route('/project/:action/:project_id')
+    .get((req, res) => { res.status(405).setHeader("Allow", "POST").redirect('/') })
     .post(async (req, res) => {
-        if (req.params.action == 'create') {
-            const data = parseProjectData(req.body, req.cookies['user']);
-            const oldProject = await Project.findOne({ title: data.title });
-            if (oldProject) {
-                res.status(400).render('project/create', { errMsg: "Title has been used before" });
-            }
+        if (req.params.action == "view") {
 
-            const project = await Project.create(data);
-            if (project) {
-                res.status(200).render('project/create', { statusMsg: "Project added to database" });
-            }
-        } else if (req.params.action == 'update') {
-            res.sendStatus(501);
-        } else if (req.params.action == 'delete') {
-            res.sendStatus(501);
+        } else if (req.params.action == "edit") {
+
         }
     });
 
