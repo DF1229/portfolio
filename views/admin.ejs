@@ -111,35 +111,93 @@
                                     <div class="tab-pane fade" id="usersUpdate"></div>
                                     <div class="tab-pane fade" id="usersDelete"></div>
                                 </div>
-
-
                             </div>
         
                             <div class="tab-pane fade" id="projects" role="tabpanel">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Title</th>
-                                            <th scope="col">Author</th>
-                                            <th scope="col">Hidden</th>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">_id</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% locals.projects.forEach((project, index) => { %>
-                                        <tr>
-                                            <th scope="row"><%= index %></th>
-                                            <th><%= project.title %></th>
-                                            <th><%= project.author %></th>
-                                            <th><%= project.hidden %></th>
-                                            <th><%= project.date.toUTCString() %></th>
-                                            <th><%= project._id %></th>
-                                        </tr>
-                                        <% }); %>
-                                    </tbody>
-                                </table>
+                                <div class="tab-pane fade show active" id="usersMenu" role="tabpanel">
+                                    <br>
+                                    <ul class="nav nav-pills nav-fill">
+                                        <li class="nav-item">
+                                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#projectsList" type="button" >View all projects</button>
+                                        </li>
+                                        <li class="nav-item" >
+                                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#projectsRegister" type="button">Add new project</button>
+                                        </li>
+                                        <li class="nav-item" >
+                                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#projectsUpdate" type="button">Edit project</button>
+                                        </li>
+                                        <li class="nav-item" >
+                                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#projectsDelete" type="button">Delete project</button>
+                                        </li>
+                                    </ul>
+                                    <br>
+                                    <div class="tab-content row">
+                                        <div class="tab-pane fade show active" id="projectsList">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Title</th>
+                                                        <th scope="col">Author</th>
+                                                        <th scope="col">Github</th>
+                                                        <th scope="col">Hidden</th>
+                                                        <th scope="col">Views</th>
+                                                        <th scope="col">_id</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% locals.projects.forEach((project, index) => { %>
+                                                        <tr>
+                                                            <th scope="row"><%= index %></th>
+                                                            <th><%= project.title %></th>
+                                                            <th><%= project.author %></th>
+                                                            <th><%= project.github %></th>
+                                                            <th><%= project.hidden %></th>
+                                                            <th><%= project.views %></th>
+                                                            <th><%= project._id %></th>
+                                                        </tr>
+                                                        <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="tab-pane fade" id="projectsRegister">
+                                            <div class="col-sm-6">
+                                                <form action="/api/project/register" method="post">
+                                                    <div class="form-group">
+                                                        <label for="title" class="form-label">Title</label>
+                                                        <input type="text" name="title" class="form-control" placeholder="" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="github" class="form-label">Github link</label>
+                                                        <input type="text" name="github" class="form-control" placeholder="" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="preview" class="form-label">Preview text</label>
+                                                        <input type="text" name="preview" class="form-control" placeholder="" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="imgLink" class="form-label">Image file name (.png)</label>
+                                                        <input type="text" name="imgLink" id="" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="visibility" class="form-label">Visibility</label>
+                                                        <select name="visibility" class="form-control">
+                                                            <option value="admins">Visible to admins</option>
+                                                            <option value="everyone">Visible to all</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="body" class="form-label" placeholder="">Post body</label>
+                                                        <textarea name="body" class="form-control" cols="30" rows="10" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="w-100 btn btn-lg btn-primary">submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="projectsUpdate"></div>
+                                        <div class="tab-pane fade" id="projectsDelete"></div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
