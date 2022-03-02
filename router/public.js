@@ -19,7 +19,9 @@ router.get('/admin', async (req, res) => {
         return res.status(401).render('login', { errMsg: "Error: unauthorized" });
     }
 
-    verifyToken(req, res);
+    if (!verifyToken(req, res)) {
+        return res.status(401).render('login', { errMsg: "Error: unauthorized" });
+    }
 
     if (!req.cookies['user'].admin) {
         return res.status(401).render('login', { errMsg: "Error: unauthorized" });
