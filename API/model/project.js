@@ -9,7 +9,6 @@ const projectSchema = new mongoose.Schema({
     preview: {type: String},
     body: {type: String},
     imgLink: {type: String},
-    imgAlt: {type: String},
     github: {type: String},
     timeToRead: {type: Number, default: 5},
     date: {type: Date, default: Date.now},
