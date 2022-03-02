@@ -87,21 +87,39 @@ router.route('/project/:action/:project_id')
     .post(async (req, res) => {
         if (req.params.action == "view") {
 
-        } else if (req.params.action == "edit") {
+        } else if (req.params.action == "update") {
 
+        } else if (req.params.action == "register") {
+            // Aquire and parse required data
+            const { title, preview, body, imgLink, github } = req.body;
+            const { hidden, timeToRead } = req.body;
+            hidden = (hidden ? true : false);
+            timeToRead = (timeToRead ? timeToRead : 5);
+
+            // Validate required data is present
+            if (!(title && preview && body && imgLink && gitHub && timeToRead && hidden))
+                return res.status(400).render('admin', { errMsg: "Missing required information, please double-check the input." });
+
+            // Attempt to find project with given title or preview text
+            let oldProject = await Project.findOne({ title });
+            oldProject = (oldProject == null ? await Project.findOne({ preview }) : null);
+            
+            if (oldProject) return res.status(409).render('admin', {errMsg: "Project with given title or preview text already exists."});
+
+            // Handle project creation and insertion into database
+            await Project.create({
+                title,
+                author: req.user.username,
+                preview,
+                body,
+                imgLink,
+                github,
+                timeToRead,
+                hidden
+            });
+
+            res.status(200).render('admin', { statusMsg: "Project succesfully registered." });
         }
     });
-
-function parseProjectData(body, user) {
-    let { hidden } = body;
-    hidden = (hidden ? true : false); // if enabled, raw value == "on"
-
-    return {
-        title: body.title,
-        author: user.username,
-        body: body.body,
-        hidden
-    }
-}
 
 module.exports = router;
