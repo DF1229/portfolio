@@ -32,8 +32,12 @@ router.get('/admin', async (req, res) => {
     res.status(200).render('admin', { user: req.cookies['user'], users: users, projects: projects});
 });
 
-router.get('/register', (req, res) => {
-    // return res.render('user/register'); // used when testing the register form
+router.get('/register', async (req, res) => {
+    // --------- used during development to override authentication ------------
+    const users = await User.find();
+    const projects = await Project.find();
+    return res.render('admin', { users: users, projects: projects });
+    // -------------------------------------------------------------------------
 
     if (!req.cookies['user']) {
         return res.status(403).redirect('/login');
