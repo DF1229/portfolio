@@ -74,7 +74,7 @@ router.route('/user/:path')
                 admin
             });
 
-            res.status(200).render('user/register', { statusMsg: "User registered" });
+            res.status(200).render('status', { statusMsg: "User succesfully registered" });
         } else if (req.params.path == 'update') {
             res.sendStatus(501);
         } else if (req.params.path == 'delete') {
