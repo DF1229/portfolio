@@ -7,8 +7,8 @@ const auth = require('../API/authentication');
 const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
 
-const Project = require('../API/model/project');
-const User = require('../API/model/user');
+const ProjectModel = require('../API/model/project');
+const UserModel = require('../API/model/user');
 
 router.get('/login', (req, res) => {
     res.status(200).render('login');
@@ -27,15 +27,15 @@ router.get('/admin', async (req, res) => {
         return res.status(401).render('login', { errMsg: "Error: unauthorized" });
     }
 
-    const projects = await Project.find();
-    const users = await User.find();
+    const projects = await ProjectModel.find();
+    const users = await UserModel.find();
     res.status(200).render('admin', { user: req.cookies['user'], users: users, projects: projects});
 });
 
 router.get('/register', async (req, res) => {
     // --------- used during development to override authentication ------------
-    const users = await User.find();
-    const projects = await Project.find();
+    const users = await UserModel.find();
+    const projects = await ProjectModel.find();
     return res.render('admin', { users: users, projects: projects });
     // -------------------------------------------------------------------------
 
@@ -50,6 +50,18 @@ router.get('/register', async (req, res) => {
     res.status(200).render('user/register');    
 });
 
+router.get('/project/view/:id', async (req, res) => {
+    const id = req.params.id;
+    const project = await ProjectModel.findOne({ _id: id });
+    if (!project) return res.status(400).render('status', { errMsg: "Project not found in database" });
+
+    res.status(200).redirect(project.github);
+    
+    const newViews = ++project.views;
+    let updateSuccess = await ProjectModel.updateOne({ _id: id }, { views: newViews }, { upsert: true});
+    console.log(updateSuccess);
+});
+
 router.get('/contact', (req, res) => {
     res.sendStatus(501);
 });
@@ -57,7 +69,7 @@ router.get('/contact', (req, res) => {
 router.route('/')
     .post((req, res) => { res.sendStatus(418); })
     .get(async (req, res) => {
-    const projects = await Project.find({ hidden: false });
+    const projects = await ProjectModel.find({ hidden: false });
     res.status(200).render('index', { user: req.cookies['user'], projects: projects });
 });
 
