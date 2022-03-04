@@ -13,6 +13,10 @@ router.get('/login', (req, res) => {
     res.status(200).render('login');
 });
 
+router.get('/logout', (req, res) => {
+    res.clearCookie('user').status(200).redirect('/');
+});
+
 router.get('/admin', async (req, res) => {
     if (!req.cookies['user']) {
         return res.status(401).render('login', { errMsg: "Error: not logged in" });
