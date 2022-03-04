@@ -2,7 +2,6 @@
 // This file gets called by app.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const auth = require('../API/authentication');
 
 // Router definition
 const router = express.Router();
@@ -35,10 +34,8 @@ router.route('/user/:path')
 
                 const user = await User.findOne({ username });
                 if (user && (await bcrypt.compare(password, user.password))) {
-                    const token = auth.generateToken(user, username);
 
                     res.cookie('user', user, cookieOptions.strict);
-                    res.cookie(process.env.JWT_COOKIE, token, cookieOptions.strict);
                     res.status(200).redirect('/');
                 } else if (!user) {
                     return res.status(401).render('login', { errMsg: "User not found", username: username });

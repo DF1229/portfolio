@@ -22,7 +22,6 @@ Listed below are all the dependencies I used, lifted directly out of the `packag
 - [Server-side HTML rendering using EJS](https://www.npmjs.com/package/ejs)
 - [HTTP server using Express.JS](https://www.npmjs.com/package/express)
 - [Request rate limiting with express-rate-limit](https://www.npmjs.com/package/express-rate-limit)
-- [Authentication using JSON Web Tokens (JWT)](https://www.npmjs.com/package/jsonwebtoken)
 - [Database communication using Mongoose.JS](https://www.npmjs.com/package/mongoose)
 
 ### Development
