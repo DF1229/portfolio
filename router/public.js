@@ -2,7 +2,6 @@
 // This file gets called by app.js
 
 const express = require("express");
-const auth = require('../API/authentication');
 
 const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
@@ -15,12 +14,8 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/admin', async (req, res) => {
-    if (!req.cookies[process.env.JWT_COOKIE]) {
-        return res.status(401).render('login', { errMsg: "Error: unauthorized" });
-    }
-
-    if (!verifyToken(req, res)) {
-        return res.status(401).render('login', { errMsg: "Error: unauthorized" });
+    if (!req.cookies['user']) {
+        return res.status(401).render('login', { errMsg: "Error: not logged in" });
     }
 
     if (!req.cookies['user'].admin) {
