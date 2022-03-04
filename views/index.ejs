@@ -102,7 +102,11 @@
     <footer class="text-muted py-5">
         <div class="container">
             <p class="float-end mb-1">
+            <% if (!locals.user) { %>
                 <a href="login">Login</a>
+            <% } else if (locals.user) { %>
+                <a href="logout">Logout</a>
+            <% } %>
             <% if (locals.user && locals.user.admin) { %>
                 <br>
                 <a href="admin">Admin</a>
