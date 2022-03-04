@@ -1,9 +1,30 @@
 # portfolio
-I started this project during some down-time from school. I didn't have anything to do so I decided I should put some effort into how I would present myself to potential employers.
-Of course, my portfolio is not only meant for potential employers. Anyone who is interested in my work, or simply wants to look around, can do so here.
+This repository is where I store the code used for hosting my portfolio website.
+If you came here to look for how I solved certain problems, you're in the right place!
 
-The overall goal with all my projects is to keep as much as possible open-source. That is also why I decided to put my portfolio on github, with as much details as I could include.
-There is one file in particular (`.env`) I could not include, this file includes things like the link to the database, but also the secret key used to generate access tokens and user passwords.
-Aside from that file, almost everything is publicly available in the repository.
+There are certain files that are not hosted on this repository, have a look at the `.gitignore` if you want to know what these are.
 
-I decided to license my work under the MIT license, for the simple reason of supporting open-source projects.
+## Why a portfolio?
+During my time as a student, I decided it would be a good idea to have a place to display projects I worked on.
+The site is meant to be publicly available, so anyone I give the link to can see what I've made.
+
+## What is the goal?
+The goal for this project is to create a place for me to showcase all the projects I worked on, or at least the ones I'm willing and able to show. In the end I want to be able to just give someone the link, and trust that they will find everything they need.
+Aside from that, I have an overall goal with all of my projects to keep everything as open-source as possible, although some projects or files simply can't be released due to security concerns.
+
+## Technologies used
+Listed below are all the dependencies I used, lifted directly out of the `package.json` file.
+### Production
+- [Password encryption using bcryptjs](https://www.npmjs.com/package/bcryptjs)
+- [CSS framework from bootstrap](https://www.npmjs.com/package/bootstrap)
+- [Cookie parsing made easy with cookie-parser](https://www.npmjs.com/package/cookie-parser)
+- [Environment variables loaded with dotenv](https://www.npmjs.com/package/dotenv)
+- [Server-side HTML rendering using EJS](https://www.npmjs.com/package/ejs)
+- [HTTP server using Express.JS](https://www.npmjs.com/package/express)
+- [Request rate limiting with express-rate-limit](https://www.npmjs.com/package/express-rate-limit)
+- [Authentication using JSON Web Tokens (JWT)](https://www.npmjs.com/package/jsonwebtoken)
+- [Database communication using Mongoose.JS](https://www.npmjs.com/package/mongoose)
+
+### Development
+- [Instantly restart the server after changes](https://www.npmjs.com/package/nodemon)
+
