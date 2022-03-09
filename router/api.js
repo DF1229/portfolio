@@ -2,6 +2,7 @@
 // This file gets called by app.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const { sanitize } = require('mongo-sanitize');
 
 // Router definition
 const router = express.Router();
@@ -27,7 +28,7 @@ router.route('/user/:path')
     .post(async (req, res) => {
         if (req.params.path == 'login') {
             try {
-                const { username, password } = req.body;
+                const { username, password } = sanitize(req.body);
                 if (!(username && password)) {
                     return res.status(400).render('login', { errMsg: "Missing username or password" });
                 }
@@ -49,14 +50,14 @@ router.route('/user/:path')
             }
         } else if (req.params.path == 'register') {
             // Validate required data is present
-            const { username, email, password } = req.body;
+            const { username, email, password } = sanitize(req.body);
             if (!(username && email && password)) {
                 return res.status(400).render('admin', { errMsg: "Missing username, email, or password." });
             }
 
             // Attempt to find user with given emailadress or username
             let oldUser = await User.findOne({ email });
-            oldUser = (oldUser == null ? await User.findOne({username}) : null);
+            oldUser = (oldUser == null ? await User.findOne({ username }) : null);
             if (oldUser) return res.status(409).render('user/register', { errMsg: "User already exists." });
 
             // Handle user creation
@@ -84,8 +85,8 @@ router.route('/project/:action')
     .post(async (req, res) => {
         if (req.params.action == "register") {
             // Aquire and parse required data
-            const { title, preview, body, imgLink, github, visibility } = req.body;
-            let { timeToRead } = req.body;
+            const { title, preview, body, imgLink, github, visibility } = sanitize(req.body);
+            let { timeToRead } = sanitize(req.body);
             timeToRead = (timeToRead ? timeToRead : 5);
 
             // Validate required data is present
