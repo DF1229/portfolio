@@ -2,7 +2,7 @@
 // This file gets called by app.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const { sanitize } = require('mongo-sanitize');
+const sanitize = require('mongo-sanitize');
 
 // Router definition
 const router = express.Router();
