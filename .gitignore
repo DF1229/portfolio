@@ -2,3 +2,4 @@ public/media/
 node_modules/
 .env
 *.code-workspace
+sslcert/
