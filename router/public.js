@@ -33,8 +33,8 @@ router.get('/admin', async (req, res) => {
 
 router.get('/register', async (req, res) => {
     // --------- used during development to override authentication ------------
-    // const users = await User.find();
-    // const projects = await Project.find();
+    // const users = await UserModel.find();
+    // const projects = await ProjectModel.find();
     // return res.render('admin', { users: users, projects: projects });
     // -------------------------------------------------------------------------
 
