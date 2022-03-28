@@ -57,8 +57,7 @@ router.get('/project/view/:id', async (req, res) => {
     res.status(200).redirect(project.github);
     
     const newViews = ++project.views;
-    let updateSuccess = await ProjectModel.updateOne({ _id: id }, { views: newViews }, { upsert: true});
-    console.log(updateSuccess);
+    await ProjectModel.updateOne({ _id: id }, { views: newViews }, { upsert: true});
 });
 
 router.get('/contact', (req, res) => {
