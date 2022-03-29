@@ -26,7 +26,8 @@
     "express-rate-limit": "^6.3.0",
     "mongo-sanitize": "^1.1.0",
     "mongoose": "^6.1.6",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "rotating-file-stream": "^3.0.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

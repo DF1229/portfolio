@@ -3,7 +3,7 @@
 require('./API/database').connect();
 
 // Various imports
-const fs = require('fs');
+const rfs = require('rotating-file-stream');
 const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
@@ -11,9 +11,22 @@ const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 
 // Logging setup
-const date = new Date();
-const dateString = `${date.getUTCDate()}-${date.getUTCMonth()}-${date.getUTCFullYear()}`;
-let logStream = fs.createWriteStream(path.join(__dirname, `/logs/${dateString}.log`), { flags: 'a' });
+const pad = num => (num > 9 ? "" : "0") + num;
+const nameGenerator = (time, index) => {
+    if (!time) return "file.log";
+
+    const year = time.getFullYear();
+    const month = pad(time.GetMonth() + 1);
+    const day = pad(time.GetDate());
+
+    return `${year}-${month}-${day}/${index}.log`;
+};
+
+const logStream = rfs.createStream(
+    nameGenerator, {
+    interval: '1d',
+    path: path.join(__dirname, 'logs')
+});
 
 // Define app
 const app = express();
