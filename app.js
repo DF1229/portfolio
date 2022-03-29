@@ -48,7 +48,7 @@ const apiLimiter = rateLimit({
 });
 
 // Set order of routers
-app.use('/api', apiLimiter, morgan('common', { stream: logStream }), apiRouter);
-app.use('/', morgan('common', { stream: logStream }), publicRouter);
+app.use('/api', apiLimiter, morgan('combined', { stream: logStream }), apiRouter);
+app.use('/', morgan('combined', { stream: logStream }), publicRouter);
 
 module.exports = app;
