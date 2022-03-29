@@ -2,9 +2,18 @@
 // This file gets called by index.js.
 require('./API/database').connect();
 
+// Various imports
+const fs = require('fs');
+const path = require('path');
+const morgan = require('morgan');
+const express = require('express');
 const cookieParser = require('cookie-parser');
-const express = require("express");
 const rateLimit = require('express-rate-limit');
+
+// Logging setup
+const date = new Date();
+const dateString = `${date.getUTCDate()}-${date.getUTCMonth()}-${date.getUTCFullYear()}`;
+let logStream = fs.createWriteStream(path.join(__dirname, `/logs/${dateString}.log`), { flags: 'a' });
 
 // Define app
 const app = express();
@@ -26,12 +35,7 @@ const apiLimiter = rateLimit({
 });
 
 // Set order of routers
-app.use('/api', apiLimiter, logger, apiRouter);
-app.use('/', logger, publicRouter);
-
-function logger(req, res, next) {
-    console.log(`${new Date().toLocaleTimeString()} ${req.ip} ${req.method} ${req.originalUrl}`);
-    next();
-}
+app.use('/api', apiLimiter, morgan('combined', { stream: logStream }), apiRouter);
+app.use('/', morgan('combined', { stream: logStream }), publicRouter);
 
 module.exports = app;
