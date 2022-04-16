@@ -31,3 +31,18 @@ httpServer.listen(HTTP_PORT, () => {
 httpsServer.listen(HTTPS_PORT, () => {
     console.log(`HTTPS:${HTTPS_PORT} LISTENING`);
 });
+
+// Uncaught error logging
+process.on('uncaughtException', err => {
+    const now = new Date();
+    fs.writeFile(
+        `logs/${now.getTime()}.errlog`,
+        err.message,
+        {flag: 'a'},
+        exitProcess(1)
+    );
+});
+
+function exitProcess(code) {
+    process.exit(code);
+}
