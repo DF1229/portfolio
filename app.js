@@ -2,9 +2,31 @@
 // This file gets called by index.js.
 require('./API/database').connect();
 
+// Various imports
+const rfs = require('rotating-file-stream');
+const path = require('path');
+const morgan = require('morgan');
+const express = require('express');
 const cookieParser = require('cookie-parser');
-const express = require("express");
 const rateLimit = require('express-rate-limit');
+
+// Logging setup
+const pad = num => (num > 9 ? "" : "0") + num;
+const nameGenerator = (time, index) => {
+    if (!time) return "file.log";
+
+    const year = time.getFullYear();
+    const month = pad(time.GetMonth() + 1);
+    const day = pad(time.GetDate());
+
+    return `${year}-${month}-${day}/${index}.log`;
+};
+
+const logStream = rfs.createStream(
+    nameGenerator, {
+    interval: '1d',
+    path: path.join(__dirname, 'logs')
+});
 
 // Define app
 const app = express();
@@ -26,12 +48,7 @@ const apiLimiter = rateLimit({
 });
 
 // Set order of routers
-app.use('/api', apiLimiter, logger, apiRouter);
-app.use('/', logger, publicRouter);
-
-function logger(req, res, next) {
-    console.log(`${new Date().toLocaleTimeString()} ${req.ip} ${req.method} ${req.originalUrl}`);
-    next();
-}
+app.use('/api', apiLimiter, morgan('combined', { stream: logStream }), apiRouter);
+app.use('/', morgan('combined', { stream: logStream }), publicRouter);
 
 module.exports = app;
