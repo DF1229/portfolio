@@ -30,6 +30,7 @@ const logStream = rfs.createStream(
 
 // Define app
 const app = express();
+app.use(morgan('combined', { stream: logStream } ));
 app.use(express.static('public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -48,7 +49,7 @@ const apiLimiter = rateLimit({
 });
 
 // Set order of routers
-app.use('/api', apiLimiter, morgan('combined', { stream: logStream }), apiRouter);
-app.use('/', morgan('combined', { stream: logStream }), publicRouter);
+app.use('/api', apiLimiter, apiRouter);
+app.use('/', publicRouter);
 
 module.exports = app;
