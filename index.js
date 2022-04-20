@@ -24,25 +24,14 @@ const httpsServer = https.createServer(credentials, app);
 // Define port the server should listen on
 const { HTTP_PORT, HTTPS_PORT } = process.env;
 
-httpServer.listen(HTTP_PORT, () => {
-    console.log(`HTTP:${HTTP_PORT} LISTENING`);
-});
-
-httpsServer.listen(HTTPS_PORT, () => {
-    console.log(`HTTPS:${HTTPS_PORT} LISTENING`);
-});
-
-// Uncaught error logging
-process.on('uncaughtException', err => {
-    const now = new Date();
-    fs.writeFile(
-        `logs/${now.getTime()}.errlog`,
-        err.message,
-        {flag: 'a'},
-        exitProcess(1)
-    );
-});
-
-function exitProcess(code) {
-    process.exit(code);
+try {
+    httpServer.listen(HTTP_PORT, () => {
+        console.log(`HTTP:${HTTP_PORT} LISTENING`);
+    });
+    
+    httpsServer.listen(HTTPS_PORT, () => {
+        console.log(`HTTPS:${HTTPS_PORT} LISTENING`);
+    });
+} catch (error) {
+    console.log("Error: ", error);
 }
