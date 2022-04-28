@@ -19,7 +19,7 @@ const nameGenerator = (time, index) => {
     const month = pad(time.getMonth() + 1);
     const day = pad(time.getDate());
 
-    return `${year}-${month}-${day}/${index}.log`;
+    return `${year}/${month}/${day}-${index}.log`;
 };
 
 const logStream = rfs.createStream(
