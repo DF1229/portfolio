@@ -13,11 +13,11 @@ const rateLimit = require('express-rate-limit');
 // Logging setup
 const pad = num => (num > 9 ? "" : "0") + num;
 const nameGenerator = (time, index) => {
-    if (!time) return "file.log";
+    if (!time) time = new Date();
 
     const year = time.getFullYear();
-    const month = pad(time.GetMonth() + 1);
-    const day = pad(time.GetDate());
+    const month = pad(time.getMonth() + 1);
+    const day = pad(time.getDate());
 
     return `${year}-${month}-${day}/${index}.log`;
 };
