@@ -12,15 +12,13 @@ const rateLimit = require('express-rate-limit');
 
 // Logging setup
 const months = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'October', 'November', 'December'];
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const pad = num => (num > 9 ? "" : "0") + num;
 const nameGenerator = (time, index) => {
     if (!time) time = new Date();
 
     const year = time.getUTCFullYear();
     const month = months[time.getUTCMonth() + 1];
-    const day = days[time.getUTCDate()];
-
+    const day = pad(time.getUTCDate());
     return `${year}/${month}/${day}.log`;
 };
 
