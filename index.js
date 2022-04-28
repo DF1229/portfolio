@@ -24,14 +24,10 @@ const httpsServer = https.createServer(credentials, app);
 // Define port the server should listen on
 const { HTTP_PORT, HTTPS_PORT } = process.env;
 
-try {
-    httpServer.listen(HTTP_PORT, () => {
-        console.log(`HTTP:${HTTP_PORT} LISTENING`);
-    });
-    
-    httpsServer.listen(HTTPS_PORT, () => {
-        console.log(`HTTPS:${HTTPS_PORT} LISTENING`);
-    });
-} catch (error) {
-    console.log("Error: ", error);
-}
+httpServer.listen(HTTP_PORT, () => {
+    console.log(`HTTP:${HTTP_PORT} LISTENING`);
+});
+
+httpsServer.listen(HTTPS_PORT, () => {
+    console.log(`HTTPS:${HTTPS_PORT} LISTENING`);
+});
