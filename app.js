@@ -17,7 +17,7 @@ const nameGenerator = (time, index) => {
     if (!time) time = new Date();
 
     const year = time.getUTCFullYear();
-    const month = months[time.getUTCMonth() + 1];
+    const month = months[time.getUTCMonth()];
     const day = pad(time.getUTCDate());
     return `${year}/${month}/${day}.log`;
 };
