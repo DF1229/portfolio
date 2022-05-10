@@ -24,7 +24,6 @@ Listed below are all the dependencies I used, lifted directly out of the `packag
 - [Request rate limiting with express-rate-limit](https://www.npmjs.com/package/express-rate-limit)
 - [Database communication using Mongoose.JS](https://www.npmjs.com/package/mongoose)
 - [Sanitize user input using Mongo-Sanitize](https://www.npmjs.com/package/mongo-sanitize)
-- [Log request and response data using Morgan](https://www.npmjs.org/package/morgan)
 
 ### Development
 - [Instantly restart the server after changes](https://www.npmjs.com/package/nodemon)
