@@ -3,34 +3,14 @@
 require('./API/database').connect();
 
 // Various imports
-const rfs = require('rotating-file-stream');
-const path = require('path');
-const morgan = require('morgan');
+const requestLogger = require('./custom_modules/requestLogger');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 
-// Logging setup
-const months = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'October', 'November', 'December'];
-const pad = num => (num > 9 ? "" : "0") + num;
-const nameGenerator = (time, index) => {
-    if (!time) time = new Date();
-
-    const year = time.getUTCFullYear();
-    const month = months[time.getUTCMonth()];
-    const day = pad(time.getUTCDate());
-    return `${year}/${month}/${day}.log`;
-};
-
-const logStream = rfs.createStream(
-    nameGenerator, {
-    interval: '1d',
-    path: path.join(__dirname, 'logs')
-});
-
 // Define app
 const app = express();
-app.use(morgan('combined', { stream: logStream } ));
+app.use(requestLogger);
 app.use(express.static('public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
