@@ -23,7 +23,8 @@ const requestSchema = new mongoose.Schema({
     secure: Boolean,
     signedCookies: Boolean,
     stale: Boolean,
-    xhr: Boolean
+    xhr: Boolean,
+    userAgent: String
 });
 
 module.exports = mongoose.model("request", requestSchema);
