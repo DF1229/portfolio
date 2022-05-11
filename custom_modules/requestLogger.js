@@ -1,3 +1,6 @@
+// This file logs requests made to the server, to the connected MongoDB database
+// This file gets called by app.js
+
 const Request = require('../API/model/request');
 
 module.exports = function(req, res, next) {
@@ -18,7 +21,8 @@ module.exports = function(req, res, next) {
     const secure = req.secure;
     const signedCookies = req.signedCookies;
     const stale = req.stale;
-    const xhr = req.xhr
+    const xhr = req.xhr;
+    const userAgent = req.headers["user-agent"];
 
     try {
         Request.create({
@@ -39,7 +43,8 @@ module.exports = function(req, res, next) {
             secure,
             signedCookies,
             stale,
-            xhr
+            xhr,
+            userAgent
         });
     } catch (error) {
         console.error('Error logging request: ', error);
